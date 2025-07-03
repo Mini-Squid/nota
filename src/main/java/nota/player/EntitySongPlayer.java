@@ -1,8 +1,8 @@
 package nota.player;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import nota.Nota;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import nota.model.Layer;
 import nota.model.Note;
 import nota.model.Playlist;
@@ -28,8 +28,8 @@ public class EntitySongPlayer extends RangeSongPlayer {
 	 * @return ability to hear the current {@link EntitySongPlayer}
 	 */
 	@Override
-	public boolean isInRange(PlayerEntity player) {
-		return player.getBlockPos().isWithinDistance(entity.getBlockPos(), getDistance());
+	public boolean isInRange(ServerPlayer player) {
+		return player.blockPosition().distManhattan(entity.blockPosition()) <= getDistance();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class EntitySongPlayer extends RangeSongPlayer {
 	}
 
 	@Override
-	public void playTick(PlayerEntity player, int tick) {
+	public void playTick(ServerPlayer player, int tick) {
 		if(!entity.isAlive()) {
 			if(autoDestroy) {
 				destroy();
@@ -60,7 +60,7 @@ public class EntitySongPlayer extends RangeSongPlayer {
 				setPlaying(false);
 			}
 		}
-		if(!player.getWorld().getRegistryKey().equals(entity.getWorld().getRegistryKey())) {
+		if (!player.level().registryAccess().equals(entity.level().registryAccess())) {
 			return; // not in same world
 		}
 
@@ -74,11 +74,11 @@ public class EntitySongPlayer extends RangeSongPlayer {
 					* ((1F / 16F) * getDistance());
 
 			if(isInRange(player)) {
-				playerList.put(player.getUuid(), true);
-				channelMode.play(player, entity.getBlockPos(), song, layer, note, volume, !enable10Octave);
+				playerList.put(player.getUUID(), true);
+				channelMode.play(player, entity.blockPosition(), song, layer, note, volume, !enable10Octave);
 			}
 			else {
-				playerList.put(player.getUuid(), false);
+				playerList.put(player.getUUID(), false);
 			}
 		}
 	}

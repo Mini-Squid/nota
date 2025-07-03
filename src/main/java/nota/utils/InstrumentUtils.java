@@ -1,8 +1,9 @@
 package nota.utils;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import nota.model.Sound;
-import net.minecraft.block.enums.Instrument;
-import net.minecraft.sound.SoundEvent;
+//import net.minecraft.sound.SoundEvent;
 
 /**
  * Various methods for working with instruments
@@ -65,45 +66,31 @@ public class InstrumentUtils {
 	 */
 	public static String getSoundNameByInstrument(byte instrument) {
 		//noinspection RedundantSuppression
-		switch(instrument) {
-			case 0:
+		return switch (instrument) {
+			case 0 ->
 				//noinspection DuplicateBranchesInSwitch
-				return "minecraft:block.note_block.harp";
-			case 1:
-				return "minecraft:block.note_block.bass";
-			case 2:
+				"minecraft:block.note_block.harp";
+			case 1 -> "minecraft:block.note_block.bass";
+			case 2 ->
 				//noinspection SpellCheckingInspection
-				return "minecraft:block.note_block.basedrum";
-			case 3:
-				return "minecraft:block.note_block.snare";
-			case 4:
-				return "minecraft:block.note_block.hat";
-			case 5:
-				return "minecraft:block.note_block.guitar";
-			case 6:
-				return "minecraft:block.note_block.flute";
-			case 7:
-				return "minecraft:block.note_block.bell";
-			case 8:
-				return "minecraft:block.note_block.chime";
-			case 9:
-				return "minecraft:block.note_block.xylophone";
-			case 10:
-				return "minecraft:block.note_block.iron_xylophone";
-			case 11:
-				return "minecraft:block.note_block.cow_bell";
-			case 12:
-				return "minecraft:block.note_block.didgeridoo";
-			case 13:
-				return "minecraft:block.note_block.bit";
-			case 14:
-				return "minecraft:block.note_block.banjo";
-			case 15:
+				"minecraft:block.note_block.basedrum";
+			case 3 -> "minecraft:block.note_block.snare";
+			case 4 -> "minecraft:block.note_block.hat";
+			case 5 -> "minecraft:block.note_block.guitar";
+			case 6 -> "minecraft:block.note_block.flute";
+			case 7 -> "minecraft:block.note_block.bell";
+			case 8 -> "minecraft:block.note_block.chime";
+			case 9 -> "minecraft:block.note_block.xylophone";
+			case 10 -> "minecraft:block.note_block.iron_xylophone";
+			case 11 -> "minecraft:block.note_block.cow_bell";
+			case 12 -> "minecraft:block.note_block.didgeridoo";
+			case 13 -> "minecraft:block.note_block.bit";
+			case 14 -> "minecraft:block.note_block.banjo";
+			case 15 ->
 				//noinspection SpellCheckingInspection
-				return "minecraft:block.note_block.pling";
-			default:
-				return "minecraft:block.note_block.harp";
-		}
+				"minecraft:block.note_block.pling";
+			default -> "minecraft:block.note_block.harp";
+		};
 	}
 
 	/**
@@ -135,47 +122,30 @@ public class InstrumentUtils {
 	}
 
 	/**
-	 * Returns the name of the org.bukkit.Instrument enum for the current server version
+	 * Returns the name of the org.bukkit.NoteBlockInstrument enum for the current server version
 	 *
 	 * @param instrument
-	 * @return Instrument enum (for the current server version)
+	 * @return NoteBlockInstrument enum (for the current server version)
 	 */
-	public static Instrument getBukkitInstrument(byte instrument) {
-		switch(instrument) {
-			case 0:
-				return Instrument.HARP;
-			case 1:
-				return Instrument.BASS;
-			case 2:
-				return Instrument.BASEDRUM;
-			case 3:
-				return Instrument.SNARE;
-			case 4:
-				return Instrument.HAT;
-			case 5:
-				return Instrument.GUITAR;
-			case 6:
-				return Instrument.FLUTE;
-			case 7:
-				return Instrument.BELL;
-			case 8:
-				return Instrument.CHIME;
-			case 9:
-				return Instrument.XYLOPHONE;
-			case 10:
-				return Instrument.IRON_XYLOPHONE;
-			case 11:
-				return Instrument.COW_BELL;
-			case 12:
-				return Instrument.DIDGERIDOO;
-			case 13:
-				return Instrument.BIT;
-			case 14:
-				return Instrument.BANJO;
-			case 15:
-				return Instrument.PLING;
-		}
-		return Instrument.HARP;
+	public static NoteBlockInstrument getBukkitInstrument(byte instrument) {
+		return switch (instrument) {
+			case 1 -> NoteBlockInstrument.BASS;
+			case 2 -> NoteBlockInstrument.BASEDRUM;
+			case 3 -> NoteBlockInstrument.SNARE;
+			case 4 -> NoteBlockInstrument.HAT;
+			case 5 -> NoteBlockInstrument.GUITAR;
+			case 6 -> NoteBlockInstrument.FLUTE;
+			case 7 -> NoteBlockInstrument.BELL;
+			case 8 -> NoteBlockInstrument.CHIME;
+			case 9 -> NoteBlockInstrument.XYLOPHONE;
+			case 10 -> NoteBlockInstrument.IRON_XYLOPHONE;
+			case 11 -> NoteBlockInstrument.COW_BELL;
+			case 12 -> NoteBlockInstrument.DIDGERIDOO;
+			case 13 -> NoteBlockInstrument.BIT;
+			case 14 -> NoteBlockInstrument.BANJO;
+			case 15 -> NoteBlockInstrument.PLING;
+			default -> NoteBlockInstrument.HARP;
+		};
 	}
 
 	/**

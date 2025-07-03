@@ -115,7 +115,7 @@ public class NBSDecoder {
 					byte instrument = dataInputStream.readByte();
 
 					if(firstcustominstrumentdiff > 0 && instrument >= firstcustominstrument) {
-						instrument += firstcustominstrumentdiff;
+						instrument += (byte) firstcustominstrumentdiff;
 					}
 
 					byte key = dataInputStream.readByte();
@@ -239,14 +239,6 @@ public class NBSDecoder {
 		return instruments;
 	}
 
-	/**
-	 * Sets a note at a tick in a song
-	 *
-	 * @param layerIndex
-	 * @param ticks
-	 * @param note
-	 * @param layerHashMap
-	 */
 	private static void setNote(int layerIndex, int ticks, Note note, HashMap<Integer, Layer> layerHashMap) {
 		Layer layer = layerHashMap.get(layerIndex);
 		if(layer == null) {

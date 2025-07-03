@@ -1,7 +1,7 @@
 package nota.player;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 import nota.Nota;
 import nota.model.Layer;
@@ -23,7 +23,7 @@ public class RadioSongPlayer extends SongPlayer {
 	}
 
 	@Override
-	public void playTick(PlayerEntity player, int tick) {
+	public void playTick(ServerPlayer player, int tick) {
 		byte playerVolume = Nota.getPlayerVolume(player);
 
 		for(Layer layer : song.getLayerHashMap().values()) {
@@ -33,8 +33,8 @@ public class RadioSongPlayer extends SongPlayer {
 			}
 
 			float volume = (layer.getVolume() * (int) this.volume * (int) playerVolume * note.getVelocity()) / 100_00_00_00F;
-			var eyePos = player.getEyePos();
-			channelMode.play(player, new BlockPos((int) eyePos.getX(), (int) eyePos.getY(), (int) eyePos.getZ()), song, layer, note, volume, !enable10Octave);
+			var eyePos = player.getEyePosition();
+			channelMode.play(player, new BlockPos((int) eyePos.x(), (int) eyePos.y(), (int) eyePos.z()), song, layer, note, volume, !enable10Octave);
 		}
 	}
 }

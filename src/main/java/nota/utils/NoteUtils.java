@@ -83,17 +83,32 @@ public class NoteUtils {
 	 * @param pitch extra pitch
 	 * @return pitch
 	 */
+//	public static float getPitchTransposed(byte key, short pitch) {
+//		// Apply key to pitch
+//		pitch += key * 100;
+//
+//		while(pitch < 3300) pitch += 1200;
+//		while(pitch > 5700) pitch -= 1200;
+//
+//		pitch -= 3300;
+//
+//		return pitches[pitch];
+//	}
 	public static float getPitchTransposed(byte key, short pitch) {
-		// Apply key to pitch
 		pitch += key * 100;
 
-		while(pitch < 3300) pitch += 1200;
-		while(pitch > 5700) pitch -= 1200;
+		// Don't limit upper range unless you're sure your sound system breaks
+		while (pitch < 3300) pitch += 1200;
 
 		pitch -= 3300;
 
+		if (pitch < 0 || pitch >= pitches.length) {
+			return 1.0f;
+		}
+
 		return pitches[pitch];
 	}
+
 
 	/**
 	 * Returns true if combination of specified key and pitch is outside Minecraft octave range

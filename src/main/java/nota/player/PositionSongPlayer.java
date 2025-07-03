@@ -1,10 +1,9 @@
 package nota.player;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import nota.Nota;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
-import net.minecraft.world.World;
 import nota.model.Layer;
 import nota.model.Note;
 import nota.model.Playlist;
@@ -15,14 +14,14 @@ import nota.model.Song;
  */
 public class PositionSongPlayer extends RangeSongPlayer {
 	private BlockPos pos;
-	World world;
+	ServerLevel world;
 
-	public PositionSongPlayer(Song song, World world) {
+	public PositionSongPlayer(Song song, ServerLevel world) {
 		super(song);
 		this.world = world;
 	}
 
-	public PositionSongPlayer(Playlist playlist, World world) {
+	public PositionSongPlayer(Playlist playlist, ServerLevel world) {
 		super(playlist);
 		this.world = world;
 	}
@@ -44,8 +43,8 @@ public class PositionSongPlayer extends RangeSongPlayer {
 	}
 
 	@Override
-	public void playTick(PlayerEntity player, int tick) {
-		if(!player.getWorld().getRegistryKey().equals(world.getRegistryKey())) {
+	public void playTick(ServerPlayer player, int tick) {
+		if(!player.level().registryAccess().equals(world.registryAccess())) {
 			return; // not in same world
 		}
 
@@ -55,15 +54,19 @@ public class PositionSongPlayer extends RangeSongPlayer {
 			Note note = layer.getNote(tick);
 			if(note == null) continue;
 
-			float volume = ((layer.getVolume() * (int) this.volume * (int) playerVolume * note.getVelocity()) / 100_00_00_00F)
-					* ((1F / 16F) * getDistance());
+			double dist = player.position().distanceTo(this.pos.getCenter());
+
+			float vol = 1 / (float) (((layer.getVolume() * (int) this.volume * (int) playerVolume * note.getVelocity()) / 100_00_00_00F)
+								* ((1F / 16F) * dist));
+
+			vol /= 10;
 
 			if(isInRange(player)) {
-				this.playerList.put(player.getUuid(), true);
-				this.channelMode.play(player, pos, song, layer, note, volume, !enable10Octave);
+				this.playerList.put(player.getUUID(), true);
+				this.channelMode.play(player, pos, song, layer, note, vol, !enable10Octave);
 			}
 			else {
-				this.playerList.put(player.getUuid(), false);
+				this.playerList.put(player.getUUID(), false);
 			}
 		}
 	}
@@ -75,7 +78,7 @@ public class PositionSongPlayer extends RangeSongPlayer {
 	 * @return ability to hear the current PositionSongPlayer
 	 */
 	@Override
-	public boolean isInRange(PlayerEntity player) {
-		return player.getBlockPos().isWithinDistance(pos, getDistance());
+	public boolean isInRange(ServerPlayer player) {
+		return player.blockPosition().distManhattan(pos) <= getDistance();
 	}
 }
